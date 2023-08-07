@@ -1,35 +1,46 @@
 import random
 
+"""
+Initiates card class
+"""
+
+
 class Card:
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
-    
+
     def __str__(self):
         return f'{self.rank["rank"]} of {self.suit}'
+
+
+"""
+Initiates deck class
+"""
+
 
 class Deck:
     def __init__(self):
         self.cards = []
-        suits = ['spades', 'hearts', 'clubs', 'diamonds']
+        suits = ["spades", "hearts", "clubs", "diamonds"]
         ranks = [
-                {'rank': 'A', 'value': 11}, 
-                {'rank': '2', 'value': 2}, 
-                {'rank': '3', 'value': 3}, 
-                {'rank': '4', 'value': 4}, 
-                {'rank': '5', 'value': 5}, 
-                {'rank': '6', 'value': 6}, 
-                {'rank': '7', 'value': 7}, 
-                {'rank': '8', 'value': 8}, 
-                {'rank': '9', 'value': 9}, 
-                {'rank': '10', 'value': 10}, 
-                {'rank': 'J', 'value': 10}, 
-                {'rank': 'Q', 'value': 10}, 
-                {'rank': 'K', 'value': 10}, 
-            ]
+            {"rank": "A", "value": 11},
+            {"rank": "2", "value": 2},
+            {"rank": "3", "value": 3},
+            {"rank": "4", "value": 4},
+            {"rank": "5", "value": 5},
+            {"rank": "6", "value": 6},
+            {"rank": "7", "value": 7},
+            {"rank": "8", "value": 8},
+            {"rank": "9", "value": 9},
+            {"rank": "10", "value": 10},
+            {"rank": "J", "value": 10},
+            {"rank": "Q", "value": 10},
+            {"rank": "K", "value": 10},
+        ]
         for suit in suits:
             for rank in ranks:
-                self.cards.append(Card(suit,rank))
+                self.cards.append(Card(suit, rank))
 
     def shuffle(self):
         if len(self.cards) > 1:
@@ -41,9 +52,10 @@ class Deck:
             if len(self.cards) > 0:
                 dealt.append(self.cards.pop())
         return dealt
-        
+
+
 class Hand:
-    def __init__(self, dealer = False):
+    def __init__(self, dealer=False):
         self.cards = []
         self.value = 0
         self.dealer = dealer
@@ -56,7 +68,7 @@ class Hand:
         has_ace = False
 
         for card in self.cards:
-            card_value = int(card.rank['value'])
+            card_value = int(card.rank["value"])
             self.value += card_value
             if card.rank["rank"] == "A":
                 has_ace = True
@@ -70,11 +82,16 @@ class Hand:
 
     def is_blackjack(self):
         return self.get_value() == 21
-    
-    def display(self, show_all_dealer_cards = False):
-        print(f'''{"Dealer's" if self.dealer else "Your"} hand:''') 
-        for idx,card in enumerate(self.cards):
-            if self.dealer and idx == 0 and not show_all_dealer_cards and not self.is_blackjack():
+
+    def display(self, show_all_dealer_cards=False):
+        print(f"""{"Dealer's" if self.dealer else "Your"} hand:""")
+        for idx, card in enumerate(self.cards):
+            if (
+                self.dealer
+                and idx == 0
+                and not show_all_dealer_cards
+                and not self.is_blackjack()
+            ):
                 print("Hidden")
             else:
                 print(card)
@@ -82,14 +99,13 @@ class Hand:
         if not self.dealer:
             print("Value:", self.get_value())
         print()
-            
-        
 
-class Game():
+
+class Game:
     def play(self):
-        game_number = 0 
+        game_number = 0
         games_to_play = 0
-        while games_to_play <= 0: 
+        while games_to_play <= 0:
             try:
                 games_to_play = int(input("How many games do you want to play? "))
             except:
@@ -133,7 +149,7 @@ class Game():
 
             player_hand_value = player_hand.get_value()
             dealer_hand_value = dealer_hand.get_value()
-            
+
             while dealer_hand_value < 17:
                 dealer_hand.add_card(deck.deal(1))
                 dealer_hand_value = dealer_hand.get_value()
@@ -150,15 +166,14 @@ class Game():
 
         print("\nThanks for playing!")
 
-
-    def check_winner(self, player_hand, dealer_hand, game_over = False):
-        if not game_over: 
+    def check_winner(self, player_hand, dealer_hand, game_over=False):
+        if not game_over:
             if player_hand.get_value() > 21:
                 print("You lost. Dealer wins!")
-                return True 
+                return True
             elif dealer_hand.get_value() > 21:
                 print("Dealer lost. You win!")
-                return True 
+                return True
             elif dealer_hand.is_blackjack() and player_hand.is_blackjack():
                 print("It's a TIE!")
                 return True
@@ -172,10 +187,11 @@ class Game():
             if player_hand.get_value() > dealer_hand.get_value():
                 print("You Win!")
             elif player_hand.get_value() == dealer_hand.get_value():
-                print("Tie!")   
+                print("Tie!")
             else:
                 print("Dealer Wins.")
         return False
+
 
 g = Game()
 g.play()
